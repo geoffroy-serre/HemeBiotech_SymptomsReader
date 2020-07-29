@@ -2,6 +2,7 @@ package com.hemebiotech.analytics.services;
 
 import com.hemebiotech.analytics.models.Symptoms;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,69 +27,86 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 	 * and returns a List with symptoms counted in it. It stop reading file when there is no more lines.
 	 * 
 	 * @return countedSymptoms in a List
-	 * @throws IOException if the file can"t be found
+	 * 
 	 */
-	public static List<Symptoms> getSymptoms() throws IOException  {
+	public static List<Symptoms> getSymptoms() {
 
-		BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"));
-		String line = reader.readLine();
-		ArrayList<Symptoms> countedSymptoms = new ArrayList<Symptoms>();
+		try {
+			BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"));
+			String line = reader.readLine();
+			ArrayList<Symptoms> countedSymptoms = new ArrayList<Symptoms>();
 
-		while (line != null) {
-			String symptomCurrentName="";
-			int indexOfSymptoms=0;
+			while (line != null) {
+				String symptomCurrentName="";
+				int indexOfSymptoms=0;
 
-			// Searching in countedSymptoms if current symptom line is already in
-			for (Symptoms symptoms : countedSymptoms) {
-				if (symptoms.getName().equals(line)) {
-					indexOfSymptoms = countedSymptoms.indexOf(symptoms);
-					symptomCurrentName = symptoms.getName();
+				// Searching in countedSymptoms if current symptom line is already in List countedSymptoms
+				for (Symptoms symptoms : countedSymptoms) {
+					if (symptoms.getName().equals(line)) {
+						indexOfSymptoms = countedSymptoms.indexOf(symptoms);
+						symptomCurrentName = symptoms.getName();
+					}
 				}
-			}
 
-			if (symptomCurrentName.equals(line)) {
-				countedSymptoms.get(indexOfSymptoms).setOccurency(countedSymptoms.get(indexOfSymptoms).getOccurency()+1);
-				line = reader.readLine();
-			}
-			else {
+				if (symptomCurrentName.equals(line)) {
+					countedSymptoms.get(indexOfSymptoms).setOccurency(countedSymptoms.get(indexOfSymptoms).getOccurency()+1);
+					line = reader.readLine();
+				}
+				else {
 
-				Symptoms s = new Symptoms(line, 1);
-				countedSymptoms.add(s);
-				line = reader.readLine();
-
-			}
-		} 
-		reader.close();
-		return countedSymptoms;
+					Symptoms s = new Symptoms(line, 1);
+					countedSymptoms.add(s);
+					line = reader.readLine();
+				}
+			} 
+			reader.close();
+			return countedSymptoms;
+		} catch (FileNotFoundException e) {
+			System.out.println("Can not find the specified input file with symptoms");
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			System.out.println("Can not access to the specified input file");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
 	 * Get the symptoms list from getSymptoms(), and sort them alphabetically 
 	 * 
 	 * @return sortedSymptomsList a list of all symptoms sorted alphabetically
-	 * @throws IOException if the input file from getSymptoms() is unreachable
+	 *
 	 */
-	public static List<Symptoms> sortSymptoms() throws IOException{
+	public static List<Symptoms> sortSymptoms(){
 
-		List<Symptoms> sortedSymptomsList = getSymptoms();		
-		Collections.sort(sortedSymptomsList);
-		return sortedSymptomsList;
+		try {
+			List<Symptoms> sortedSymptomsList = getSymptoms();		
+			Collections.sort(sortedSymptomsList);
+			return sortedSymptomsList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 
 	}
 
 	/**
 	 * Get the sortedSymptomsList from sortSymptoms() and write the data in results.out
-	 * 
-	 * @throws IOException if the symptoms source can't be read or the ouput can't be write.
 	 */
-	public static void writeOutputFileSortedSymptoms() throws IOException {
-		FileWriter writer = new FileWriter("results.out");
+	public static void writeOutputFileSortedSymptoms() {
+		try {
+			FileWriter writer = new FileWriter("results.out");
 
-		for (Symptoms symptoms : sortSymptoms()) {
-			writer.write(symptoms.getName()+" = "+symptoms.getOccurency()+"\n");		
+			for (Symptoms symptoms : sortSymptoms()) {
+				writer.write(symptoms.getName()+" = "+symptoms.getOccurency()+"\n");		
+			}
+
+			writer.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
 		}
-
-		writer.close();
 		
 	}
 

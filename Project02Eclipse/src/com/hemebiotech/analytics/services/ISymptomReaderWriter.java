@@ -1,9 +1,6 @@
 package com.hemebiotech.analytics.services;
 
 import java.util.List;
-
-import java.io.IOException;
-
 import com.hemebiotech.analytics.models.Symptoms;
 
 /**
@@ -20,7 +17,7 @@ public interface ISymptomReaderWriter {
 	 * 
 	 * @return a raw listing of all Symptoms obtained from a data source, duplicates are possible/probable
 	 */
-	public static List<Symptoms> getSymptoms() throws IOException{
+	public static List<Symptoms> getSymptoms(){
 		return null;
 	}
 	
