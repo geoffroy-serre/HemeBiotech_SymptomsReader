@@ -10,7 +10,8 @@ import com.hemebiotech.analytics.services.SymptomsInputOuput;
  * The program count and sort alphabetically symptoms from a symptoms.txt file.
  * 
  * @author Heimdall
- *
+ * @version 0.1.0
+ * @see {@link com.hemebiotech.analytics.models.Symptoms}
  */
 
 public class AnalyticsCounter {

@@ -15,6 +15,7 @@ import java.util.List;
  * in an ouput file results.out. 
  * 
  * @author Heimdall
+ * @see {@link Symptoms#Symptoms(String, int)}.
  *
  */
 
@@ -27,6 +28,8 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 	 * and returns a List with symptoms counted in it. It stop reading file when there is no more lines.
 	 * 
 	 * @return countedSymptoms in a List
+	 * @exception IOException 
+	 * @exception FileNotFoundException
 	 * 
 	 */
 	public static List<Symptoms> getSymptoms() {
@@ -40,7 +43,7 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 				String symptomCurrentName="";
 				int indexOfSymptoms=0;
 
-				// Searching in countedSymptoms if current symptom line is already in List countedSymptoms
+				// Searching in countedSymptoms if current symptom line is already in the created List.
 				for (Symptoms symptoms : countedSymptoms) {
 					if (symptoms.getName().equals(line)) {
 						indexOfSymptoms = countedSymptoms.indexOf(symptoms);
@@ -74,9 +77,8 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 
 	/**
 	 * Get the symptoms list from getSymptoms(), and sort them alphabetically 
-	 * 
 	 * @return sortedSymptomsList a list of all symptoms sorted alphabetically
-	 *
+	 * @see {@link #getSymptoms()}.
 	 */
 	public static List<Symptoms> sortSymptoms(){
 
@@ -93,7 +95,12 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 
 	/**
 	 * Get the sortedSymptomsList from sortSymptoms() and write the data in results.out
+	 * @exception IOException
+	 * @see {@link #getSymptoms()}.
+	 * @see {@link #sortSymptoms()}
+	 * 
 	 */
+	
 	public static void writeOutputFileSortedSymptoms() {
 		try {
 			FileWriter writer = new FileWriter("results.out");
