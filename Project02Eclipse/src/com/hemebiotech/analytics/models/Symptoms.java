@@ -11,14 +11,14 @@ public class Symptoms implements Comparable<Symptoms> {
 
 	private String name;
 	private int occurency;
-	
+
 	/**
 	 * Create Symptom object
 	 * 
 	 * @param name Name of the symptom.
 	 * @param occurency Number of time the symptom is present.
 	 */
-	
+
 	public  Symptoms (String name, int occurency) {
 		this.name = name;
 		this.occurency = occurency;
@@ -60,36 +60,32 @@ public class Symptoms implements Comparable<Symptoms> {
 	}
 
 
-	
+
 	// Implementation for alphabetical order sorting.
-		@Override
+	@Override
 	public int compareTo(Symptoms o) {
-	
+
 		return this.name.compareTo(o.name);
 	}
-	
+
 	/*
 	 *  If you need to sort the objects numerically, and then if some occurencies are the same, sort alphabetically, 
 	 *	just comment the above method, and uncomment the under one.
 	 *
 	 */
-	
+
 	/*
 	@Override
 	public int compareTo(Symptoms o) {
-	if(this.occurency == o.occurency) {
-		return this.name.compareTo(o.name);
+		if(this.occurency == o.occurency) {
+			return this.name.compareTo(o.name);
+		}
+		else {
+			return this.occurency - o.occurency;
+		}
 	}
-	else {
-		return this.occurency - o.occurency;
-	}
-	*/
-		
-	}
+	 */
 
 
-	
-	
-	
-	
+
 }

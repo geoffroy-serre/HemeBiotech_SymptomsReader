@@ -1,5 +1,6 @@
 package com.hemebiotech.analytics.services;
 
+import java.util.Collections;
 import java.util.List;
 import com.hemebiotech.analytics.models.Symptoms;
 
@@ -18,7 +19,7 @@ public interface ISymptomReaderWriter {
 	 * @return a raw listing of all Symptoms obtained from a data source, duplicates are possible/probable
 	 */
 	public static List<Symptoms> getSymptoms(){
-		return null;
+		return Collections.emptyList();
 	}
 	
 	/**

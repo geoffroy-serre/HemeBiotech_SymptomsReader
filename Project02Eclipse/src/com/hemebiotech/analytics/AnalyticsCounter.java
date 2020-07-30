@@ -1,11 +1,11 @@
 package com.hemebiotech.analytics;
 
-import java.io.IOException;
+
 
 import com.hemebiotech.analytics.services.SymptomsInputOuput;
 
 /**
- * Hemebiotech Symptoms Analytics
+ * Hemebiotech Analytics
  * 
  * The program count and sort alphabetically symptoms from a symptoms.txt file.
  * 
@@ -17,7 +17,7 @@ import com.hemebiotech.analytics.services.SymptomsInputOuput;
 public class AnalyticsCounter {
 	
 	
-	public static void main(String args[]) throws IOException {
+	public static void main(String[] args) {
 		
 		double startTime = System.currentTimeMillis();
 

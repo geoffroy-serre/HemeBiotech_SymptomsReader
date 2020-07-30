@@ -21,6 +21,8 @@ import java.util.List;
 
 
 public class SymptomsInputOuput implements ISymptomReaderWriter   {
+	
+	private SymptomsInputOuput(){}
 
 
 	/**
@@ -34,50 +36,47 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 	 */
 	public static List<Symptoms> getSymptoms() {
 
-		try {
-			BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"));
-			String line = reader.readLine();
-			ArrayList<Symptoms> countedSymptoms = new ArrayList<Symptoms>();
+		
+			try (BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"))) {
+				String line = reader.readLine();
+				ArrayList<Symptoms> countedSymptoms = new ArrayList<>();
 
-			while (line != null) {
-				String symptomCurrentName="";
-				int indexOfSymptoms=0;
+				while (line != null) {
+					String symptomCurrentName="";
+					int indexOfSymptoms=0;
 
-				// Searching in countedSymptoms if current symptom line is already in the created List.
-				for (Symptoms symptoms : countedSymptoms) {
-					if (symptoms.getName().equals(line)) {
-						indexOfSymptoms = countedSymptoms.indexOf(symptoms);
-						symptomCurrentName = symptoms.getName();
+					// Searching in countedSymptoms if current symptom line is already in the created List.
+					for (Symptoms symptoms : countedSymptoms) {
+						if (symptoms.getName().equals(line)) {
+							indexOfSymptoms = countedSymptoms.indexOf(symptoms);
+							symptomCurrentName = symptoms.getName();
+						}
 					}
-				}
 
-				if (symptomCurrentName.equals(line)) {
-					countedSymptoms.get(indexOfSymptoms).setOccurency(countedSymptoms.get(indexOfSymptoms).getOccurency()+1);
-					line = reader.readLine();
-				}
-				else {
+					if (symptomCurrentName.equals(line)) {
+						countedSymptoms.get(indexOfSymptoms).setOccurency(countedSymptoms.get(indexOfSymptoms).getOccurency()+1);
+						line = reader.readLine();
+					}
+					else {
 
-					Symptoms s = new Symptoms(line, 1);
-					countedSymptoms.add(s);
-					line = reader.readLine();
-				}
-			} 
-			reader.close();
-			return countedSymptoms;
-		} catch (FileNotFoundException e) {
-			System.out.println("Can not find the specified input file with symptoms");
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			System.out.println("Can not access to the specified input file");
-			e.printStackTrace();
-			return null;
-		}
+						Symptoms s = new Symptoms(line, 1);
+						countedSymptoms.add(s);
+						line = reader.readLine();
+					}
+				} 
+				reader.close();
+				return countedSymptoms;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return Collections.emptyList();
+			}
+			
+		
 	}
 
 	/**
 	 * Get the symptoms list from getSymptoms(), and sort them alphabetically 
-	 * @return sortedSymptomsList a list of all symptoms sorted alphabetically
+	 * @return sortedSymptomsList a list of all symptoms sorted alphabetically by default
 	 * @see {@link #getSymptoms()}.
 	 */
 	public static List<Symptoms> sortSymptoms(){
@@ -88,7 +87,7 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 			return sortedSymptomsList;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return Collections.emptyList();
 		}
 
 	}
@@ -102,25 +101,18 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 	 */
 	
 	public static void writeOutputFileSortedSymptoms() {
-		try {
-			FileWriter writer = new FileWriter("results.out");
+		
+			try (FileWriter writer = new FileWriter("results.out")) {
+				for (Symptoms symptoms : sortSymptoms()) {
+					writer.write(symptoms.getName()+" = "+symptoms.getOccurency()+"\n");		
+				}
 
-			for (Symptoms symptoms : sortSymptoms()) {
-				writer.write(symptoms.getName()+" = "+symptoms.getOccurency()+"\n");		
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-			writer.close();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 
-
-
-
-
-
-
-}
