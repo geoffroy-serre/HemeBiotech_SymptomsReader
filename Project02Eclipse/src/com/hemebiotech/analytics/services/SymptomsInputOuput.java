@@ -2,7 +2,6 @@ package com.hemebiotech.analytics.services;
 
 import com.hemebiotech.analytics.models.Symptoms;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,13 +14,13 @@ import java.util.List;
  * in an ouput file results.out. 
  * 
  * @author Heimdall
- * @see {@link Symptoms#Symptoms(String, int)}.
+ * @see com.hemebiotech.analytics.models.Symptoms#Symptoms(String name, int occurency)
  *
  */
 
 
 public class SymptomsInputOuput implements ISymptomReaderWriter   {
-	
+
 	private SymptomsInputOuput(){}
 
 
@@ -30,54 +29,52 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 	 * and returns a List with symptoms counted in it. It stop reading file when there is no more lines.
 	 * 
 	 * @return countedSymptoms in a List
-	 * @exception IOException 
-	 * @exception FileNotFoundException
 	 * 
 	 */
 	public static List<Symptoms> getSymptoms() {
 
-		
-			try (BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"))) {
-				String line = reader.readLine();
-				ArrayList<Symptoms> countedSymptoms = new ArrayList<>();
 
-				while (line != null) {
-					String symptomCurrentName="";
-					int indexOfSymptoms=0;
+		try (BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"))) {
+			String line = reader.readLine();
+			ArrayList<Symptoms> countedSymptoms = new ArrayList<>();
 
-					// Searching in countedSymptoms if current symptom line is already in the created List.
-					for (Symptoms symptoms : countedSymptoms) {
-						if (symptoms.getName().equals(line)) {
-							indexOfSymptoms = countedSymptoms.indexOf(symptoms);
-							symptomCurrentName = symptoms.getName();
-						}
+			while (line != null) {
+				String symptomCurrentName="";
+				int indexOfSymptoms=0;
+
+				// Searching in countedSymptoms if current symptom line is already in the created List.
+				for (Symptoms symptoms : countedSymptoms) {
+					if (symptoms.getName().equals(line)) {
+						indexOfSymptoms = countedSymptoms.indexOf(symptoms);
+						symptomCurrentName = symptoms.getName();
 					}
+				}
 
-					if (symptomCurrentName.equals(line)) {
-						countedSymptoms.get(indexOfSymptoms).setOccurency(countedSymptoms.get(indexOfSymptoms).getOccurency()+1);
-						line = reader.readLine();
-					}
-					else {
+				if (symptomCurrentName.equals(line)) {
+					countedSymptoms.get(indexOfSymptoms).setOccurency(countedSymptoms.get(indexOfSymptoms).getOccurency()+1);
+					line = reader.readLine();
+				}
+				else {
 
-						Symptoms s = new Symptoms(line, 1);
-						countedSymptoms.add(s);
-						line = reader.readLine();
-					}
-				} 
-				reader.close();
-				return countedSymptoms;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return Collections.emptyList();
-			}
-			
-		
+					Symptoms s = new Symptoms(line, 1);
+					countedSymptoms.add(s);
+					line = reader.readLine();
+				}
+			} 
+
+			return countedSymptoms;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+
+
 	}
 
 	/**
 	 * Get the symptoms list from getSymptoms(), and sort them alphabetically 
 	 * @return sortedSymptomsList a list of all symptoms sorted alphabetically by default
-	 * @see {@link #getSymptoms()}.
+	 * @see #getSymptoms()
 	 */
 	public static List<Symptoms> sortSymptoms(){
 
@@ -94,25 +91,22 @@ public class SymptomsInputOuput implements ISymptomReaderWriter   {
 
 	/**
 	 * Get the sortedSymptomsList from sortSymptoms() and write the data in results.out
-	 * @exception IOException
-	 * @see {@link #getSymptoms()}.
-	 * @see {@link #sortSymptoms()}
+	 * @see #getSymptoms()
+	 * @see #sortSymptoms()
 	 * 
 	 */
-	
-	public static void writeOutputFileSortedSymptoms() {
-		
-			try (FileWriter writer = new FileWriter("results.out")) {
-				for (Symptoms symptoms : sortSymptoms()) {
-					writer.write(symptoms.getName()+" = "+symptoms.getOccurency()+"\n");		
-				}
 
-				writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public static void writeOutputFileSortedSymptoms() {
+
+		try (FileWriter writer = new FileWriter("results.out")) {
+			for (Symptoms symptoms : sortSymptoms()) {
+				writer.write(symptoms.getName()+" = "+symptoms.getOccurency()+"\n");		
 			}
-		} 
-		
-	}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	} 
+
+}
 

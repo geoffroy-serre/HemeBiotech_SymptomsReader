@@ -4,7 +4,7 @@ package com.hemebiotech.analytics.models;
  * Class for Symptoms creation.
  * Use constructor Symptoms (String name, int occurency)
  * @author Heimdall
- * @see {@link #Symptoms(String, int)}.
+ * @see #Symptoms(String name, int occurency)
  */
 
 public class Symptoms implements Comparable<Symptoms> {
@@ -53,13 +53,11 @@ public class Symptoms implements Comparable<Symptoms> {
 	/**
 	 * Set the symptom's occurency
 	 * 
-	 * @param occurency
+	 * @param occurency Number of time the symptom is present.
 	 */
 	public void setOccurency(int occurency) {
 		this.occurency = occurency;
 	}
-
-
 
 	// Implementation for alphabetical order sorting.
 	@Override
@@ -85,7 +83,6 @@ public class Symptoms implements Comparable<Symptoms> {
 		}
 	}
 	 */
-
 
 
 }
