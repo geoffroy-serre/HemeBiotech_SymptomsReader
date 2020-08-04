@@ -59,12 +59,49 @@ public class Symptoms implements Comparable<Symptoms> {
 		this.occurency = occurency;
 	}
 
-	// Implementation for alphabetical order sorting.
+	/**
+	 * Overriding hashCode method as it is a pre-requisite for correct use of hashMap
+	 * Set hashCode with the Symptoms name's.
+	 */
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+	
+	/**
+	 * Overriding equals method as it is a pre-requisite for correct use of hashMap
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+
+		else  {
+			return false;
+		}
+	}
+
+	/**
+	 * toString() method override to describe Symptoms with simplicity.
+	 * @return name + " = "+occurency+"\n"
+	 */
+	@Override
+	public String toString() {
+		return this.name + " = "+this.occurency+"\n";
+	}
+	
+	/*
+	 * Implementation for alphabetical order sorting.
+	 * @return Result of alphabetical comparison.
+	 */
 	@Override
 	public int compareTo(Symptoms o) {
-
 		return this.name.compareTo(o.name);
 	}
+
+
 
 	/*
 	 *  If you need to sort the objects numerically, and then if some occurencies are the same, sort alphabetically, 
@@ -72,17 +109,19 @@ public class Symptoms implements Comparable<Symptoms> {
 	 *
 	 */
 
-	/*
-	@Override
-	public int compareTo(Symptoms o) {
-		if(this.occurency == o.occurency) {
-			return this.name.compareTo(o.name);
-		}
-		else {
-			return this.occurency - o.occurency;
-		}
-	}
-	 */
+	  /*
+	   @Override public int compareTo(Symptoms o) { 
+	   
+		  if(this.occurency ==	  o.occurency) {
+			  return this.name.compareTo(o.name); 
+		  } 
+		  else { 
+			  return	  this.occurency - o.occurency;
+		  } 
+		  }
+		  */
+	 
+
 
 
 }

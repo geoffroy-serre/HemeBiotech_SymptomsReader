@@ -1,13 +1,13 @@
 package com.hemebiotech.analytics;
 
 
-
-import com.hemebiotech.analytics.services.SymptomsInputOuput;
+import com.hemebiotech.analytics.services.ISymptomReaderWriter;
+import com.hemebiotech.analytics.services.SymptomReaderWriterImpl;
 
 /**
  * Hemebiotech Analytics
  * 
- * The program count and sort alphabetically symptoms from a symptoms.txt file.
+ * The program get, count and sort alphabetically symptoms from a source file.
  * 
  * @author Heimdall
  * @version 0.1.0
@@ -20,13 +20,17 @@ public class AnalyticsCounter {
 	public static void main(String[] args) {
 
 		double startTime = System.currentTimeMillis();
+		
+		String inputPath = "symptoms.txt";
+		String outputPath = "results.out";
 
-		try {
-			SymptomsInputOuput.writeOutputFileSortedSymptoms();
-		} catch (Exception e) {
-			System.out.println("Can not process the program successfully, try to look if input file name is correct or if you have access in write for the ouput");
-			e.printStackTrace();
-		}
+		/*
+		 * Instanciating Symptoms's service to launch the symptoms's file processing.
+		 */
+		
+		ISymptomReaderWriter service = new SymptomReaderWriterImpl();
+		service.getSymptoms(inputPath);
+		service.writeOutputFileSortedSymptoms(outputPath);
 
 		System.out.println("Program Terminated in: "+(System.currentTimeMillis()-startTime)/1000+" seconds");
 
