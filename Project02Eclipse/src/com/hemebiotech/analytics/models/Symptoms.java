@@ -92,6 +92,15 @@ public class Symptoms implements Comparable<Symptoms> {
 		return this.name + " = "+this.occurency+"\n";
 	}
 	
+	/**
+	 * symptomsToFile() method describe Symptoms with simplicity for output.
+	 * @return name + " = "+occurency+"\n"
+	 */
+	
+	public String symptomsToFile() {
+		return this.name + " = "+this.occurency+"\n";
+	}
+	
 	/*
 	 * Implementation for alphabetical order sorting.
 	 * @return Result of alphabetical comparison.

@@ -44,16 +44,17 @@ public class SymptomReaderWriterImpl implements ISymptomReaderWriter   {
 			Map<String, Symptoms> countedSymptoms = new HashMap<>();
 
 			while (line != null) {
-				if (countedSymptoms.get(line) == null) {
+				Symptoms symp = countedSymptoms.get(line);
+				if (symp == null) {
 					Symptoms s = new Symptoms(line, 1);
-					countedSymptoms.put(line, s);
-					line = reader.readLine();
+					countedSymptoms.put(line, s);	
 				}
+				
 				else {
-
-					countedSymptoms.get(line).setOccurency(countedSymptoms.get(line).getOccurency()+1);
-					line = reader.readLine();
+					symp.setOccurency(symp.getOccurency()+1);
 				}
+				
+				line = reader.readLine();
 			} 
 
 			return countedSymptoms;
@@ -95,7 +96,7 @@ public class SymptomReaderWriterImpl implements ISymptomReaderWriter   {
 
 		try (FileWriter writer = new FileWriter(outputPath)) {
 			for (Symptoms s : sortSymptoms()) {
-				writer.write(s.toString());
+				writer.write(s.symptomsToFile());
 
 			}
 		} catch (IOException e) {
