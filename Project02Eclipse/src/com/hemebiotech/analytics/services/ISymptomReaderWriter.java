@@ -18,4 +18,6 @@ public interface ISymptomReaderWriter {
 	List<Symptoms> sortSymptomsNumericalReverse(Map<String, Symptoms> symptoms);
 
 	void writeOutputFileSortedSymptoms(String outputPath, List<Symptoms> symptomsOrdered);
+
+	void processingUserSortingChoice(int userChoice, String inputFile, String outputFile);
 }

@@ -1,6 +1,9 @@
 package com.hemebiotech.analytics.ui;
 
-public class UserInterface {
+public interface UserInterface {
+  void userMenu();
 
+  int userChoice();
 
+  boolean askForRetry();
 }
