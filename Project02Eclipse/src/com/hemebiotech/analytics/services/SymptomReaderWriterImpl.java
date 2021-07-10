@@ -1,103 +1,86 @@
 package com.hemebiotech.analytics.services;
 
+
 import com.hemebiotech.analytics.models.Symptoms;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-/**
- * Contains methods to read symptoms from a file, sort them, and write the sorted list
- * in an ouput file results.out. 
- * 
- * @author Heimdall
- * @see com.hemebiotech.analytics.models.Symptoms#Symptoms(String name, int occurency)
- *
- */
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class SymptomReaderWriterImpl implements ISymptomReaderWriter   {
 
 	private String inputPath;
 
-
-	/**
-	 * Method use to read symptoms from an input file
-	 * and returns a HashMap<String symptomsName, Symptoms symptoms> with symptoms counted in it. 
-	 * It stop reading file when there is no more lines.
-	 * 
-	 * @param inputPath is the source file  containing symptoms
-	 * @return countedSymptoms in a HashMap
-	 * 
-	 */
+	@Override
 	public Map<String, Symptoms> getSymptoms(String inputPath) {
 
 		this.inputPath = inputPath;
 		try (BufferedReader reader = new BufferedReader (new FileReader(inputPath))) {
 			String line = reader.readLine();
 			Map<String, Symptoms> countedSymptoms = new HashMap<>();
-
 			while (line != null) {
 				Symptoms symp = countedSymptoms.get(line);
 				if (symp == null) {
 					Symptoms s = new Symptoms(line, 1);
 					countedSymptoms.put(line, s);	
 				}
-				
 				else {
 					symp.setOccurency(symp.getOccurency()+1);
 				}
-				
 				line = reader.readLine();
-			} 
-
+			}
 			return countedSymptoms;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return Collections.emptyMap();
 		}
-
-
 	}
 
-	/**
-	 * Get the symptoms hashMap from getSymptoms(), and sort them depending the implemented compareTo() method in Symptoms class 
-	 * @return sortedSymptomsList a list of sorted symptoms
-	 * @see #getSymptoms()
-	 */
-	public List<Symptoms> sortSymptoms(){
-		List<Symptoms> sortedSymptomsList = new ArrayList<>();
-		for (Entry<String, Symptoms> symptoms : getSymptoms(inputPath).entrySet()) {
-			sortedSymptomsList.add(symptoms.getValue());
 
-		}
-		Collections.sort(sortedSymptomsList);
-
-
-		return sortedSymptomsList;
+	@Override
+	public List<Symptoms> sortSymptomsAlpha( Map<String,Symptoms> symptoms){
+		return symptoms.values()
+						.stream()
+						.sorted()
+						.collect(Collectors.toList());
 	}
 
-	/**
-	 * Get the sortedSymptomsList from sortSymptoms() and write the data in an output file
-	 * It calls the sort method of this class before writing.
-	 * @param outputPath file where processed symptoms are written.
-	 * @see #getSymptoms()
-	 * @see #sortSymptoms()
-	 * 
-	 */
+	@Override
+	public List<Symptoms> sortSymptomsAlphaReversed( Map<String,Symptoms> symptoms){
+		return symptoms.values()
+						.stream()
+						.sorted(Comparator.reverseOrder())
+						.collect(Collectors.toList());
+	}
 
-	public void writeOutputFileSortedSymptoms(String outputPath) {
+	@Override
+	public List<Symptoms> sortSymptomsNumerical( Map<String,Symptoms> symptoms){
+		Comparator<Symptoms> comparator = (o1, o2) -> o1.getOccurency() - o2.getOccurency();
 
+		return symptoms.values()
+						.stream()
+						.sorted(comparator)
+						.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Symptoms> sortSymptomsNumericalReverse( Map<String,Symptoms> symptoms){
+		Comparator<Symptoms> comparator = (o1, o2) -> o1.getOccurency() - o2.getOccurency();
+
+		return symptoms.values()
+						.stream()
+						.sorted(comparator.reversed())
+						.collect(Collectors.toList());
+	}
+
+	@Override
+	public void writeOutputFileSortedSymptoms(String outputPath, List<Symptoms> symptomsOrdered) {
 		try (FileWriter writer = new FileWriter(outputPath)) {
-			for (Symptoms s : sortSymptoms()) {
+			for (Symptoms s : symptomsOrdered) {
 				writer.write(s.symptomsToFile());
-
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
