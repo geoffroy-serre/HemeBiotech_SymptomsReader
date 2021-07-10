@@ -1,7 +1,9 @@
 package com.hemebiotech.analytics.services;
 
 
+import com.hemebiotech.analytics.enums.Colors;
 import com.hemebiotech.analytics.models.Symptoms;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -103,9 +105,9 @@ public class SymptomReaderWriterImpl implements ISymptomReaderWriter {
       default:
         break;
     }
+    System.out.print(Colors.GREEN);
     System.out.printf("Symptoms from %s are sorted and written to %s \n", inputFile, outputFile);
     System.out.println();
-
   }
 
 }
